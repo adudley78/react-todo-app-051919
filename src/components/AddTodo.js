@@ -2,12 +2,12 @@ import React, { Component} from 'react'
 
 export default class addTodo extends Component {
     state = {
-        title: ""
+        title: ' '
     }
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.addTodo(this.tate.title);
+        this.props.addTodo(this.state.title);
         this.setState({ title: '' })
     }
 
