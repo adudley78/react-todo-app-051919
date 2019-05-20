@@ -5,30 +5,20 @@ import Todos from './components/Todos';
 import AddTodo from './components/AddTodo';
 import About from './components/pages/About';
 // Import object ID generator package
-import uuid from 'uuid';
+// import uuid from 'uuid';
+import axios from "axios";
 
 import './App.css';
 
 class App extends Component {
   state = {
-    todos: [
-      {
-        id: uuid.v4(),
-        title: "Take out the trash",
-        completed: false
-      },
-      {
-        id: uuid.v4(),
-        title: "Dinner with wife",
-        completed: true
-      },
-      {
-        id: uuid.v4(),
-        title: "Meeting with boss",
-        completed: false
-      }
-    ]
+    todos: []
   };
+
+  componentDidMount() {
+    axios.get('https://jsonplaceholder.typicode.com/todos/?_limit=10')
+    .then(res => this.setState({ todos: res.data}))
+  }
 
   // Toggle complete
   markComplete = id => {
@@ -44,19 +34,22 @@ class App extends Component {
 
   // Delete todo
   delTodo = id => {
-    this.setState({
-      todos: [...this.state.todos.filter(todo => todo.id !== id)]
-    });
+    // Implement real backend with RESTful API such that an object is actually deleted from a database and then the UI
+    axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+      .then(res => this.setState({
+      todos: [...this.state.todos.filter(todo => todo.id !== id)] }));
   };
 
   // Add todo
-  addTodo = title => {
-    const newTodo = {
-      id: uuid.v4(),
-      title,
-      completed: false
-    };
-    this.setState({ todos: [...this.state.todos, newTodo] });
+  addTodo = (title) => {
+    axios
+      .post("https://jsonplaceholder.typicode.com/todos", {
+        title,
+        completed: false
+      })
+      .then(res =>
+        this.setState({ todos: [...this.state.todos, res.data] })
+      );
   };
 
   render() {
