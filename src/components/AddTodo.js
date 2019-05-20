@@ -1,6 +1,7 @@
-import React, { Component} from 'react'
+import React, { Component} from 'react';
+import PropTypes from 'prop-types';
 
-export default class addTodo extends Component {
+export class AddTodo extends Component {
     state = {
         title: ' '
     }
@@ -33,6 +34,13 @@ export default class addTodo extends Component {
                 style={{ flex: "1" }}
             />
             </form>
-    );
+        );
     }
 }
+
+// PropTypes
+AddTodo.propTypes = {
+  addTodo: PropTypes.func.isRequired
+}
+
+export default AddTodo
